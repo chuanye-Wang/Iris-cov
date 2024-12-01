@@ -87,13 +87,13 @@ def main(total_epoch, lr):
 
         for data in train_bar:
             sapmle, label = data
-            label = label.squeeze(-1) # 这里前面的infer函数并没有squeeze为什么这里就需要squeeze？
+            label = label.squeeze(-1) # 这里前面的infer函数并没有squeeze为什么这里就需要squeeze？因为crossEntropy计算需要这样
             sample_number += sapmle.shape[0]
             optimizer.zero_grad()
 
             outputs = model(sapmle.to(device)) # [batch_size, 3]
             pre_y = torch.max(outputs,dim=1)[1] # [1] 返回类别
-            acc_num += torch.eq(pre_y, label.to(device)).sum() # 那岂不是infer函数那里也得to（device）?
+            acc_num += torch.eq(pre_y, label.to(device)).sum() # 那岂不是infer函数那里也得to（device）? 没错！
             loss = loss_f(outputs, label.to(device))
             loss.backward()
             optimizer.step()
