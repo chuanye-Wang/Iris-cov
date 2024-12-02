@@ -99,18 +99,18 @@ def main(total_epoch, lr):
             optimizer.step()
 
             train_acc = float(acc_num / sample_number)
-            train_bar.desc = f"Epoch:{this_epoch+1}/{total_epoch} train_acc: {train_acc}"
+            train_bar.desc = "Epoch:\033[32m{}/{}\033[0m train_acc: \033[32m{:.3f}\033[0m".format(this_epoch+1,total_epoch,train_acc)
 
         val_acc = infer(model, val_loader, device)
-        print(f"Epoc:{this_epoch+1}/{total_epoch} test_acc:{val_acc}")
+        print("Epoc:{}/{} val_acc:\033[32m{:.3f}\033[0m".format(this_epoch+1,total_epoch,val_acc))
         torch.save(model.state_dict(),os.path.join(save_path,"checkPoint.pth"))
 
         val_acc = 0.
-        train_acc = 0. # 感觉不清零也行？
+        # train_acc = 0. # 感觉不清零也行？ 雀食行
 
     print("\033[32m训练已完成!\033[0m")
     test_acc = infer(model, tes_loader ,device)
-    print(f"\033[32m测试准确度：{test_acc}\033[0m")
+    print("\033[32m测试准确度：{:.3f}\033[0m".format(test_acc))
 
 if __name__ == "__main__":
     main(20,0.05)
